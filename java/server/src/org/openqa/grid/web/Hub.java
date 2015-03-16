@@ -19,8 +19,6 @@ package org.openqa.grid.web;
 
 import com.google.common.collect.Maps;
 
-import com.sun.org.glassfish.gmbal.ManagedObject;
-
 import org.openqa.grid.internal.Registry;
 import org.openqa.grid.internal.utils.GridHubConfiguration;
 import org.openqa.grid.web.servlet.DisplayHelpServlet;
@@ -41,7 +39,6 @@ import org.seleniumhq.jetty7.servlet.ServletContextHandler;
 import org.seleniumhq.jetty7.util.thread.QueuedThreadPool;
 import org.weakref.jmx.MBeanExporter;
 import org.weakref.jmx.Managed;
-import org.weakref.jmx.Nested;
 
 import java.lang.management.ManagementFactory;
 import java.net.MalformedURLException;
@@ -55,7 +52,6 @@ import javax.servlet.Servlet;
  * Jetty server. Main entry point for everything about the grid. <p/> Except for unit tests, this
  * should be a singleton.
  */
-@ManagedObject
 public class Hub {
 
   private static final Logger log = Logger.getLogger(Hub.class.getName());

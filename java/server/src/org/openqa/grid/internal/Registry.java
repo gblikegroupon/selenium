@@ -19,8 +19,6 @@ package org.openqa.grid.internal;
 
 import com.google.common.base.Predicate;
 
-import com.sun.org.glassfish.gmbal.ManagedObject;
-
 import net.jcip.annotations.ThreadSafe;
 
 import org.openqa.grid.internal.listeners.Prioritizer;
@@ -35,11 +33,8 @@ import org.openqa.selenium.remote.internal.HttpClientFactory;
 import org.openqa.selenium.remote.server.log.LoggingManager;
 import org.weakref.jmx.MBeanExporter;
 import org.weakref.jmx.Managed;
-import org.weakref.jmx.Nested;
 
 import java.lang.management.ManagementFactory;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -53,7 +48,6 @@ import java.util.logging.Logger;
  * Kernel of the grid. Keeps track of what's happening, what's free/used and assigned resources to
  * incoming requests.
  */
-@ManagedObject
 @ThreadSafe
 public class Registry {
 

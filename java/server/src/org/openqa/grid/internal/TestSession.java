@@ -21,8 +21,6 @@ import com.google.common.base.Charsets;
 import com.google.common.io.ByteStreams;
 import com.google.common.net.MediaType;
 
-import com.sun.org.glassfish.gmbal.ManagedObject;
-
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpHost;
@@ -75,7 +73,6 @@ import javax.servlet.http.HttpServletResponse;
  * timed out)
  */
 @SuppressWarnings("JavaDoc")
-@ManagedObject
 public class TestSession {
 
   private static final Logger log = Logger.getLogger(TestSession.class.getName());

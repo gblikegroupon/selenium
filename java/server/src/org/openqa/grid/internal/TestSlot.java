@@ -18,8 +18,6 @@ package org.openqa.grid.internal;
 
 import com.google.common.base.Throwables;
 
-import com.sun.org.glassfish.gmbal.ManagedObject;
-
 import org.openqa.grid.common.SeleniumProtocol;
 import org.openqa.grid.common.exception.GridException;
 import org.openqa.grid.internal.listeners.TestSessionListener;
@@ -54,7 +52,6 @@ import java.util.logging.Logger;
  * own.
  * 
  */
-@ManagedObject
 public class TestSlot {
 
   private static final Logger log = Logger.getLogger(TestSlot.class.getName());
