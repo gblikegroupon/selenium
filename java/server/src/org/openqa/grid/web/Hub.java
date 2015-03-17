@@ -33,14 +33,13 @@ import org.openqa.grid.web.servlet.TestSessionStatusServlet;
 import org.openqa.grid.web.servlet.beta.ConsoleServlet;
 import org.openqa.grid.web.utils.ExtraServletUtil;
 import org.openqa.selenium.net.NetworkUtils;
+import org.openqa.selenium.server.JmxRegister;
 import org.seleniumhq.jetty7.server.Server;
 import org.seleniumhq.jetty7.server.bio.SocketConnector;
 import org.seleniumhq.jetty7.servlet.ServletContextHandler;
 import org.seleniumhq.jetty7.util.thread.QueuedThreadPool;
-import org.weakref.jmx.MBeanExporter;
 import org.weakref.jmx.Managed;
 
-import java.lang.management.ManagementFactory;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Map;
@@ -102,11 +101,7 @@ public class Hub {
       }
     }
 
-    // TODO refactor all checks like this and registration
-    if(System.getProperty("com.sun.management.jmxremote") != null) {
-      MBeanExporter exporter = new MBeanExporter(ManagementFactory.getPlatformMBeanServer());
-      exporter.export("org.openqa.grid.selenium:name=Hub", this);
-    }
+    new JmxRegister().maybeRegister("org.openqa.grid.selenium:name=Hub", this);
 
     initServer();
 

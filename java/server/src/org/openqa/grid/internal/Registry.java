@@ -31,6 +31,7 @@ import org.openqa.grid.web.servlet.handler.RequestHandler;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.internal.HttpClientFactory;
 import org.openqa.selenium.remote.server.log.LoggingManager;
+import org.openqa.selenium.server.JmxRegister;
 import org.weakref.jmx.MBeanExporter;
 import org.weakref.jmx.Managed;
 
@@ -94,11 +95,8 @@ public class Registry {
   public static Registry newInstance(Hub hub, GridHubConfiguration config) {
     Registry registry = new Registry(hub, config);
 
-    // TODO refactor all checks like this and registration
-    if(System.getProperty("com.sun.management.jmxremote") != null) {
-      MBeanExporter exporter = new MBeanExporter(ManagementFactory.getPlatformMBeanServer());
-      exporter.export("org.openqa.grid.selenium:name=Registry", registry);
-    }
+
+    new JmxRegister().maybeRegister("org.openqa.grid.selenium:name=Registry", registry);
 
     registry.matcherThread.start();
 
@@ -188,11 +186,8 @@ public class Registry {
       log.warning(String.format(
           "Proxy '%s' was previously registered.  Cleaning up any stale test sessions.", proxy));
 
-      // TODO refactor all checks like this and registration
-      if(System.getProperty("com.sun.management.jmxremote") != null) {
-        MBeanExporter exporter = new MBeanExporter(ManagementFactory.getPlatformMBeanServer());
-        exporter.unexport("org.openqa.grid.internal:name=RemoteProxy,id=" + proxy.getId().replace(':', '|'));
-      }
+      new JmxRegister().maybeUnregister(
+          "org.openqa.grid.internal:name=RemoteProxy,id=" + proxy.getId().replace(':', '|'));
         
       final RemoteProxy p = proxies.remove(proxy);
       for (TestSlot slot : p.getTestSlots()) {
@@ -386,11 +381,11 @@ public class Registry {
           ((SelfHealingProxy) proxy).startPolling();
         }
 
-        // TODO refactor all checks like this and registration
-        if(System.getProperty("com.sun.management.jmxremote") != null) {
-          MBeanExporter exporter = new MBeanExporter(ManagementFactory.getPlatformMBeanServer());
-          exporter.export("org.openqa.grid.internal:name=RemoteProxy,id="+proxy.getId().replace(':', '|'), proxy);
-        }
+        new JmxRegister()
+            .maybeRegister(
+                "org.openqa.grid.internal:name=RemoteProxy,id="+proxy.getId().replace(':', '|')
+                , proxy
+            );
 
         proxies.add(proxy);
         fireMatcherStateChanged();

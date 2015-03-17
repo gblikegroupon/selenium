@@ -23,6 +23,7 @@ import org.openqa.grid.common.exception.GridException;
 import org.openqa.grid.internal.listeners.TestSessionListener;
 import org.openqa.grid.internal.utils.CapabilityMatcher;
 import org.openqa.grid.internal.utils.GridHubConfiguration;
+import org.openqa.selenium.server.JmxRegister;
 import org.weakref.jmx.Flatten;
 import org.weakref.jmx.JmxException;
 import org.weakref.jmx.MBeanExporter;
@@ -82,17 +83,9 @@ public class TestSlot {
     matcher = proxy.getCapabilityHelper();
     this.capabilities = capabilities;
 
-    // TODO refactor all checks like this and registration
-    if(System.getProperty("com.sun.management.jmxremote") != null) {
-      MBeanExporter exporter = new MBeanExporter(ManagementFactory.getPlatformMBeanServer());
-      try {
-        exporter.unexport("org.openqa.grid.selenium:path="+getPath());
-        exporter.export("org.openqa.grid.selenium:path="+getPath(), this);
-      } catch(JmxException ex) {
-        // do nothing
-      }
-    }
-
+    JmxRegister register = new JmxRegister();
+    register.maybeUnregister("org.openqa.grid.selenium:path="+getPath());
+    register.maybeRegister("org.openqa.grid.selenium:path="+getPath(), this);
   }
 
   public Map<String, Object> getCapabilities() {

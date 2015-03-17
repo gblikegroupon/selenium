@@ -42,6 +42,7 @@ import org.openqa.grid.web.servlet.handler.SeleniumBasedRequest;
 import org.openqa.grid.web.servlet.handler.SeleniumBasedResponse;
 import org.openqa.grid.web.servlet.handler.WebDriverRequest;
 import org.openqa.selenium.io.IOUtils;
+import org.openqa.selenium.server.JmxRegister;
 import org.weakref.jmx.MBeanExporter;
 import org.weakref.jmx.Managed;
 
@@ -105,11 +106,7 @@ public class TestSession {
     this.timeSource = timeSource;
     lastActivity = this.timeSource.currentTimeInMillis();
 
-    // TODO refactor all checks like this and registration
-    if(System.getProperty("com.sun.management.jmxremote") != null) {
-      MBeanExporter exporter = new MBeanExporter(ManagementFactory.getPlatformMBeanServer());
-      exporter.export("org.openqa.grid.internal:name=TestSession,path="+getSlot().getPath(), this);
-    }
+    new JmxRegister().maybeRegister("org.openqa.grid.internal:name=TestSession,path="+getSlot().getPath(), this);
   }
 
   /**
